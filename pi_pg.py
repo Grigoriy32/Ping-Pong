@@ -4,8 +4,8 @@ mixer.pre_init(44100, -16, 1, 512)
 init()
 font.init()
 
-x1 = 350
-y1 = 400
+x1 = 0
+y1 = 100
 #создай окно игры
 width_win = 700
 height_win = 500
@@ -15,6 +15,7 @@ display.set_caption("Пинг-Понг")
 background = transform.scale(image.load('zadniy_phone.png'), (700, 500))
 FPS = 60
 
+clock = time.Clock()
 score = 0
 game = True
 
@@ -32,17 +33,32 @@ class GameSprite(sprite.Sprite):
    def reset(self):
        window.blit(self.image, (self.rect.x, self.rect.y))
 class Player(GameSprite):
-    def update(self):
+    def update_l(self):
         keys_pressed = key.get_pressed()
-        if keys_pressed[K_RIGHT] and self.rect.x < 650:
-            self.rect.x += self.speed
-        if keys_pressed[K_LEFT] and self.rect.x > 0:
-            self.rect.x -= self.speed
+        if keys_pressed[K_UP] and self.rect.y > 7:
+            self.rect.y -= self.speed
+        if keys_pressed[K_DOWN] and self.rect.y < 400:
+            self.rect.y += self.speed
+    def update_r(self):
+        keys_pressed = key.get_pressed()
+        if keys_pressed[K_w] and self.rect.y > 7:
+            self.rect.y -= self.speed
+        if keys_pressed[K_s] and self.rect.y < 400:
+            self.rect.y += self.speed
+
+
+rocket1 = Player('rocket.jpg', x1, y1, 10, 20, 100)
+rocket2 = Player('rocket.jpg',680, y1, 10, 20, 100)
+
 
 while game:
     for e in event.get():
         if e.type == QUIT:
            game = False
     window.blit(background, (0,0))
+    rocket1.reset()
+    rocket2.reset()
+    rocket1.update_l()
+    rocket2.update_r()
     display.update()
     clock.tick(FPS)
