@@ -43,3 +43,6 @@ while game:
     for e in event.get():
         if e.type == QUIT:
            game = False
+    window.blit(background, (0,0))
+    display.update()
+    clock.tick(FPS)
